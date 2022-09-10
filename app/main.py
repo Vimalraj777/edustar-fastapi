@@ -1,7 +1,7 @@
 # from asyncio.windows_events import NULL
 # import re
 # from cmath import log
-from operator import mod
+
 from fastapi.middleware.cors import CORSMiddleware
 # from typing import Optional
 # from urllib import response
@@ -9,7 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from . import oauth2
 from fastapi import Body, FastAPI,Response,status,HTTPException
 from random import randrange
-import psycopg2
+# import psycopg2
 # from psycopg2.extras import RealDictCursor
 # import time
 from . import model
