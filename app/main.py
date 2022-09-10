@@ -106,6 +106,20 @@ def updated(post:Posts,db:Session=Depends(get_db), user=Depends(oauth2.get_curre
 
 
 
+def setData(data):
+    key=[]
+    get=[]
+    set=[]
+    for list in data:
+        key =list.keys()
+        break
+    for list in data:
+        for value in key:
+            get.append(list[value])
+        set.append(get)
+        get=[]
+    return set        
+
 
 
 
@@ -113,6 +127,8 @@ def updated(post:Posts,db:Session=Depends(get_db), user=Depends(oauth2.get_curre
 # post records for edustar project
 @app.post("/post") 
 def crate_post(post:dict,db:Session=Depends(get_db), user=Depends(oauth2.get_current_user)):
+    post['scholarship']=setData(post['scholarship'])
+    # print(post['scholarship'])
     new_post=model.Information( **post)
     db.add(new_post)
     db.commit()
@@ -146,6 +162,7 @@ def updated(post:dict,db:Session=Depends(get_db), user=Depends(oauth2.get_curren
     up=updated_post.first()
     if up==None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="Page not found")
+    post['scholarship']=setData(post['scholarship'])
     updated_post.update(post,synchronize_session=False)
     db.commit()
     return {"id":up.id}
@@ -184,7 +201,9 @@ def test_post(db:Session=Depends(get_db)):
     return new_post
 
 
-
+@app.get("/")
+def test():
+    return {"message":"Successfully registered"}
 
 
 

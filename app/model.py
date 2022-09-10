@@ -2,7 +2,7 @@ from email.policy import default
 import re
 from tkinter import CASCADE
 from xmlrpc.client import boolean
-from sqlalchemy import Column,Integer,String,Boolean,ForeignKey
+from sqlalchemy import Column,Integer,String,Boolean,ForeignKey,ARRAY
 from sqlalchemy.sql.expression import null
 from .database import Base
 from sqlalchemy.orm import relationship
@@ -347,6 +347,7 @@ class Information(Base):
     winter_timein=Column(String,nullable=True)
     winter_timeout=Column(String,nullable=True)
     school_shift=Column(String,nullable=True)
+    scholarship= Column(ARRAY(String),nullable=True)
 
 
 
@@ -368,7 +369,6 @@ class Log(Base):
     content=Column(String,nullable=False)
 
 
-
 class Users(Base):
         __tablename__="users"
         id=Column(Integer,nullable=False,primary_key=True,autoincrement=True)
@@ -388,12 +388,6 @@ class Posts(Base):
 
 
 
-class Sample(Base):
-    __tablename__="sample"
-    username=Column(String,nullable=False,primary_key=True)
-    password=Column(String,nullable=False)
-
-
 class Vote(Base):
     __tablename__="vote"
     posts_id=Column(Integer,ForeignKey("posts.id",ondelete='CASCADE'),primary_key=True)
@@ -401,5 +395,10 @@ class Vote(Base):
 
 
 
+
+class Sample(Base):
+    __tablename__="sample"
+    username=Column(String,nullable=False,primary_key=True)
+    password=Column(String,nullable=False)
 
 

@@ -1,4 +1,4 @@
-import imp
+import importlib
 from jose import JWTError , jwt
 from datetime import datetime , timedelta
 from . import schemas 
