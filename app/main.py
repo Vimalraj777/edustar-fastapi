@@ -31,9 +31,6 @@ oauth2_scheme=OAuth2PasswordBearer(tokenUrl='login')
 
 
 
-model.Base.metadata.create_all(bind=engine)
-
-
 app=FastAPI()
 origins=[
     "http://localhost:4200"
