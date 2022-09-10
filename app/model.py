@@ -1,9 +1,4 @@
-from email.policy import default
-import re
-from tkinter import CASCADE
-from xmlrpc.client import boolean
 from sqlalchemy import Column,Integer,String,Boolean,ForeignKey,ARRAY
-from sqlalchemy.sql.expression import null
 from .database import Base
 from sqlalchemy.orm import relationship
 
