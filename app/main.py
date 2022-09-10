@@ -2,7 +2,6 @@
 # import re
 # from cmath import log
 from operator import mod
-from tkinter import S
 from fastapi.middleware.cors import CORSMiddleware
 # from typing import Optional
 # from urllib import response
