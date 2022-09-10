@@ -180,10 +180,6 @@ def delete_post(db:Session=Depends(get_db), user=Depends(oauth2.get_current_user
 
 
 
-
-
-
-
 # get all records from Edustar General Information Table
 @app.get("/get")
 def test_post(db:Session=Depends(get_db)):
@@ -298,16 +294,6 @@ def updated(post:create,db:Session=Depends(get_db),user_id:int=Depends(oauth2.ge
 
 
 
-
-
-
-
-
-
-
-
-
-
 @app.post("/vote" )
 def vote(vote:Vote,db:Session=Depends(get_db),current_user:int =Depends(oauth2.get_current_user)):
     vote_query=db.query(model.Vote).filter(model.Vote.posts_id==vote.posts_id,model.Vote.users_id==current_user.id)
@@ -327,8 +313,3 @@ def vote(vote:Vote,db:Session=Depends(get_db),current_user:int =Depends(oauth2.g
         db.commit()
         return {"message":"Deleted vote Successfully"}
 
-
-
-    
-    
-    
