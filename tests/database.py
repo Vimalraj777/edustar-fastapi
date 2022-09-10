@@ -8,14 +8,14 @@ from sqlalchemy.orm import sessionmaker , Session
 from app.config import settings
 from app import schemas
 from app.model import Base
-import pytest
+# import pytest
 from app.oauth2 import create_access_token
 
 
 
 engine=create_engine(f"postgresql://{settings.database_username}:{settings.database_password}@{settings.database_hostname}:{settings.database_port}/{settings.database_name}_test")
 TestingSessionlocal=sessionmaker(autocommit=False,autoflush=False,bind=engine)
-Base.metadata.create_all(bind=engine)
+# Base.metadata.create_all(bind=engine)
 Base=declarative_base()
 
 def override_get_db():
