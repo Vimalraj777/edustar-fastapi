@@ -2,11 +2,11 @@ from sqlalchemy import Column,Integer,String,Boolean,ForeignKey,ARRAY
 from .database import Base
 from sqlalchemy.orm import relationship
 
-class Product(Base):
-    __tablename__="product1"
-    id=Column(Integer,primary_key = True, nullable=False)
-    name=Column(String,nullable=True)
-    quantity=Column(Integer,nullable=True)
+# class Product(Base):
+#     __tablename__="product1"
+#     id=Column(Integer,primary_key = True, nullable=False)
+#     name=Column(String,nullable=True)
+#     quantity=Column(Integer,nullable=True)
 
 # class login(Base):
 
