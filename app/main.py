@@ -36,7 +36,8 @@ model.Base.metadata.create_all(bind=engine)
 
 app=FastAPI()
 origins=[
-    "http://localhost:4200"
+    "http://localhost:4200",
+    "https://edustar-ui.herokuapp.com"
 ]
 
 app.add_middleware(
