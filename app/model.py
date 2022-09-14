@@ -1,4 +1,4 @@
-from sqlalchemy import Column,Integer,String,Boolean,ForeignKey,ARRAY
+from sqlalchemy import Column,Integer,String,Boolean,ForeignKey,ARRAY , BigInteger
 from .database import Base
 from sqlalchemy.orm import relationship
 
@@ -26,7 +26,7 @@ class School(Base):
     gender=Column(String,nullable=False)
     fname=Column(String,nullable=False)
     mname=Column(String,nullable=False)
-    phnumber=Column(Integer,nullable=False)
+    phnumber=Column(BigInteger,nullable=False)
     address=Column(String,nullable=False)
 #     # user=relationship("")
 
@@ -343,6 +343,7 @@ class Information(Base):
     winter_timeout=Column(String,nullable=True)
     school_shift=Column(String,nullable=True)
     scholarship= Column(ARRAY(String),nullable=True)
+    enrollment= Column(ARRAY(String),nullable=True)
 
 
 

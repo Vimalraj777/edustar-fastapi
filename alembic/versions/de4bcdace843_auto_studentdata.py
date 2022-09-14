@@ -27,7 +27,7 @@ def upgrade() -> None:
     sa.Column('gender', sa.String(), nullable=False),
     sa.Column('fname', sa.String(), nullable=False),
     sa.Column('mname', sa.String(), nullable=False),
-    sa.Column('phnumber', sa.Integer(), nullable=False),
+    sa.Column('phnumber', sa.BigInteger(), nullable=False),
     sa.Column('address', sa.String(), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
