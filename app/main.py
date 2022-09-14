@@ -164,6 +164,7 @@ def updated(post:dict,db:Session=Depends(get_db), user=Depends(oauth2.get_curren
     if up==None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="Page not found")
     post['scholarship']=setData(post['scholarship'])
+    post['enrollment']=setData(post["enrollment"])
     updated_post.update(post,synchronize_session=False)
     db.commit()
     return {"id":up.id}
