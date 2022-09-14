@@ -128,6 +128,7 @@ def setData(data):
 @app.post("/post") 
 def crate_post(post:dict,db:Session=Depends(get_db), user=Depends(oauth2.get_current_user)):
     post['scholarship']=setData(post['scholarship'])
+    post['enrollment']=setData(post['enrollment'])
     # print(post['scholarship'])
     new_post=model.Information( **post)
     db.add(new_post)
