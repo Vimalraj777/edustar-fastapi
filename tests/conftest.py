@@ -14,7 +14,7 @@ from app.oauth2 import create_access_token
 # from fastapi import responses , requests
 
 
-engine=create_engine(f"postgresql://{settings.database_username}:{settings.database_password}@{settings.database_hostname}:{settings.database_port}/{settings.database_name}")
+engine=create_engine(f"postgresql://{settings.database_username}:{settings.database_password}@{settings.database_hostname}:{settings.database_port}/{settings.database_name}_test")
 TestingSessionlocal=sessionmaker(autocommit=False,autoflush=False,bind=engine)
 
 
