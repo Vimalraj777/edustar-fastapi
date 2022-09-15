@@ -14,9 +14,8 @@ from app.oauth2 import create_access_token
 # from fastapi import responses , requests
 
 
-engine=create_engine(f"postgresql://{settings.database_username}:{settings.database_password}@{settings.database_hostname}:{settings.database_port}/{settings.database_name}")
+engine=create_engine(f"postgresql://{settings.database_username}:{settings.database_password}@{settings.database_hostname}:{settings.database_port}/{settings.database_name}_test")
 TestingSessionlocal=sessionmaker(autocommit=False,autoflush=False,bind=engine)
-
 
 
 client=TestClient(app)
@@ -26,6 +25,7 @@ def session():
     Base.metadata.drop_all(bind=engine)
     Base.metadata.create_all(bind=engine)
     db=TestingSessionlocal()
+    
     try:
         yield db
     finally:
