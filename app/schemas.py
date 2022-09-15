@@ -44,9 +44,9 @@ class Token(BaseModel):
     token_type:str
 
 
-class users(BaseModel):
-    id:str
-    name:str
+class user(BaseModel):
+    title:str
+    content:str
 
 
     

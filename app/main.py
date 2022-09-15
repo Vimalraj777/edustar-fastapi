@@ -16,7 +16,8 @@ from . import model
 from .database import engine,Sessionlocal,get_db
 from sqlalchemy.orm import Session , relationship
 from fastapi import Depends
-from .schemas import Posts,Log,users,Token , tokenData ,POSTS , create , Vote
+# from .schemas import Posts,Log,users,Token , tokenData ,POSTS , create , Vote , user
+from . import schemas
 from .utils import hash
 # from . import utils
 from . import oauth2
@@ -58,10 +59,9 @@ def login(user_credentials:OAuth2PasswordRequestForm=Depends(),db:Session=Depend
         if data2:
             access_token=oauth2.create_access_token(data={"Name":user_credentials.username})
             return {"token":access_token}       
-        c= HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="invalid credentials")
-        return c
-    b= HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="invalid credentials")
-    return b
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="invalid credentials")
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="invalid credentials")
+    
 
 
 @app.get("/getdata")
@@ -75,12 +75,12 @@ def test_post(db:Session=Depends(get_db), user=Depends(oauth2.get_current_user))
 
 #register for school profile
 @app.post("/sqlalchemy") 
-def crate_post(post:Posts,db:Session=Depends(get_db)):
+def crate_post(post:schemas.Posts,db:Session=Depends(get_db)):
     new_post=model.School( **post.dict())
     db.add(new_post)
     db.commit()
     db.refresh(new_post)
-    return "Success"
+    return new_post
 
 
 #retrieve values for school profile
@@ -95,7 +95,7 @@ def test_post(db:Session=Depends(get_db),user_id:int=Depends(oauth2.get_current_
 
 #update school profile
 @app.put("/sqlalchemy")
-def updated(post:Posts,db:Session=Depends(get_db), user=Depends(oauth2.get_current_user)):
+def updated(post:schemas.Posts,db:Session=Depends(get_db), user=Depends(oauth2.get_current_user)):
     updated_post=db.query(model.School).filter(model.School.id==user.id)
     up=updated_post.first()
     if up==None:
@@ -205,7 +205,14 @@ def test():
 
 
 
-
+@app.post("/user")
+def login(post:schemas.user,db:Session=Depends(get_db)):
+    # hashed=hash(post.id)
+    # post.id=hashed
+    new=model.Log(**post.dict())
+    db.add(new)
+    db.commit()
+    return {"data":"successful"}
 
 
 
@@ -233,18 +240,11 @@ def delete_post(id:int,db:Session=Depends(get_db)):
     return response(status_code=status.HTTP_204_NO_CONTENT)'''
 
  
-@app.post("/user")
-def login(post:users,db:Session=Depends(get_db)):
-    hashed=hash(post.id)
-    post.id=hashed
-    new=model.Login(**post.dict())
-    db.add(new)
-    db.commit()
-    return {"data":"successful"}
+
 
 
 @app.post("/sample") 
-def crate_post(post:POSTS,db:Session=Depends(get_db)):
+def crate_post(post:schemas.POSTS,db:Session=Depends(get_db)):
     print('works')
     new_post=model.Sample( **post.dict())
     db.add(new_post)
@@ -261,7 +261,7 @@ def crate_post(post:POSTS,db:Session=Depends(get_db)):
 
 
 @app.post("/sendposts") 
-def crate_post(post:create,db:Session=Depends(get_db) , user_id:int=Depends(oauth2.get_current_user)):
+def crate_post(post:schemas.create,db:Session=Depends(get_db) , user_id:int=Depends(oauth2.get_current_user)):
     new_post=model.Posts( **post.dict())
     db.add(new_post)
     db.commit()
@@ -280,7 +280,7 @@ def test_post(db:Session=Depends(get_db), user_id:int=Depends(oauth2.get_current
 
 
 @app.put("/puttoken")
-def updated(post:create,db:Session=Depends(get_db),user_id:int=Depends(oauth2.get_current_user)):
+def updated(post:schemas.create,db:Session=Depends(get_db),user_id:int=Depends(oauth2.get_current_user)):
     updated_post=db.query(model.Posts).filter(model.Posts.user_id==user_id.id)
     up=updated_post.first()
     # print(up)
@@ -297,7 +297,7 @@ def updated(post:create,db:Session=Depends(get_db),user_id:int=Depends(oauth2.ge
 
 
 @app.post("/vote" )
-def vote(vote:Vote,db:Session=Depends(get_db),current_user:int =Depends(oauth2.get_current_user)):
+def vote(vote:schemas.Vote,db:Session=Depends(get_db),current_user:int =Depends(oauth2.get_current_user)):
     vote_query=db.query(model.Vote).filter(model.Vote.posts_id==vote.posts_id,model.Vote.users_id==current_user.id)
     found_vote=vote_query.first()
     if(vote.dir==1):

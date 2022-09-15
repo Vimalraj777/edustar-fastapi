@@ -359,10 +359,10 @@ class Information(Base):
 
 
 
-# class Log(Base):
-#     __tablename__="log"
-#     title=Column(String,nullable=False,primary_key=True)
-#     content=Column(String,nullable=False)
+class Log(Base):
+    __tablename__="log"
+    title=Column(String,nullable=False,primary_key=True)
+    content=Column(String,nullable=False)
 
 
 class Users(Base):
