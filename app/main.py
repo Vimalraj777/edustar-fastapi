@@ -1,33 +1,22 @@
-# from asyncio.windows_events import NULL
-# import re
-# from cmath import log
-
 from fastapi.middleware.cors import CORSMiddleware
-# from typing import Optional
-# from urllib import response
-# from colorama import Cursor
 from . import oauth2
 from fastapi import Body, FastAPI,Response,status,HTTPException
 from random import randrange
-# import psycopg2
-# from psycopg2.extras import RealDictCursor
-# import time
 from . import model
 from .database import engine,Sessionlocal,get_db
 from sqlalchemy.orm import Session , relationship
 from fastapi import Depends
-# from .schemas import Posts,Log,users,Token , tokenData ,POSTS , create , Vote , user
 from . import schemas
 from .utils import hash
-# from . import utils
+from . import utils
 from . import oauth2
 from fastapi.security.oauth2 import OAuth2PasswordRequestForm
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy import func 
+from .routers import post , user
 
 
-# access_token=oauth2.create_access_token(data={'user_id':users.id})
-# return {"token":access_token}
+
 oauth2_scheme=OAuth2PasswordBearer(tokenUrl='login')
 
 
@@ -36,6 +25,7 @@ oauth2_scheme=OAuth2PasswordBearer(tokenUrl='login')
 
 
 app=FastAPI()
+
 origins=[
     "http://localhost:4200",
     "https://edustar-ui.herokuapp.com"
@@ -51,267 +41,11 @@ app.add_middleware(
 
 
 
-@app.post("/Login")
-def login(user_credentials:OAuth2PasswordRequestForm=Depends(),db:Session=Depends(get_db)):
-    data1=db.query(model.School).filter(model.School.username==user_credentials.username).first()
-    if data1:
-        data2=db.query(model.School).filter(model.School.password==user_credentials.password).first()
-        if data2:
-            access_token=oauth2.create_access_token(data={"Name":user_credentials.username})
-            return {"token":access_token}       
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="invalid credentials")
-    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="invalid credentials")
-    
-
-
-@app.get("/getdata")
-def test_post(db:Session=Depends(get_db), user=Depends(oauth2.get_current_user)):
-    return user  
-
-
-
-
-
-
-#register for school profile
-@app.post("/sqlalchemy") 
-def crate_post(post:schemas.Posts,db:Session=Depends(get_db)):
-    new_post=model.School( **post.dict())
-    db.add(new_post)
-    db.commit()
-    db.refresh(new_post)
-    return new_post
-
-
-#retrieve values for school profile
-@app.get("/profile")
-def test_post(db:Session=Depends(get_db),user_id:int=Depends(oauth2.get_current_user)):
-    new_post=db.query(model.School).filter(model.School.id==user_id.id)
-    new=new_post.first()
-    return new
-
-
-
-
-#update school profile
-@app.put("/sqlalchemy")
-def updated(post:schemas.Posts,db:Session=Depends(get_db), user=Depends(oauth2.get_current_user)):
-    updated_post=db.query(model.School).filter(model.School.id==user.id)
-    up=updated_post.first()
-    if up==None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="Page not found")
-    updated_post.update(post.dict(),synchronize_session=False)  
-    db.commit()
-    return {"id":up.id}
-
-
-
-def setData(data):
-    key=[]
-    get=[]
-    set=[]
-    for list in data:
-        key =list.keys()
-        break
-    for list in data:
-        for value in key:
-            get.append(list[value])
-        set.append(get)
-        get=[]
-    return set        
-
-
-
-
-
-# post records for edustar project
-@app.post("/post") 
-def crate_post(post:dict,db:Session=Depends(get_db), user=Depends(oauth2.get_current_user)):
-    post['scholarship']=setData(post['scholarship'])
-    post['enrollment']=setData(post['enrollment'])
-    # print(post['scholarship'])
-    new_post=model.Information( **post)
-    db.add(new_post)
-    db.commit()
-    db.refresh(new_post)
-    return {"data":new_post.id}
-
-
-
-
-# get specific record for edustar project
-@app.get("/get/{id}")
-def test_post(id:int,db:Session=Depends(get_db)):
-    new_post=db.query(model.Information).filter(model.Information.id==id)
-    new=new_post.first()
-    return {"data":new}
-
-
-
-@app.get("/profileget")
-def test_post(db:Session=Depends(get_db),user_id:str=Depends(oauth2.get_current_user)):
-    new_post=db.query(model.Information).filter(model.Information.id==user_id.id)
-    new=new_post.first()
-    return new
-
-
-
-# update the retrieved edustar details record.
-@app.put("/profileput")
-def updated(post:dict,db:Session=Depends(get_db), user=Depends(oauth2.get_current_user)):
-    updated_post=db.query(model.Information).filter(model.Information.id==user.id)
-    up=updated_post.first()
-    if up==None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="Page not found")
-    post['scholarship']=setData(post['scholarship'])
-    post['enrollment']=setData(post["enrollment"])
-    updated_post.update(post,synchronize_session=False)
-    db.commit()
-    return {"id":up.id}
-
-
-@app.delete("/deleted")
-def delete_post(db:Session=Depends(get_db), user=Depends(oauth2.get_current_user)):
-    new_post=db.query(model.School).filter(model.School.id==user.id)
-    if new_post.first()==None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail=f"the id:{id} does not exist")
-    new_post.delete(synchronize_session=False)
-    db.commit()   
-    return Response(status_code=status.HTTP_204_NO_CONTENT)
-
-
-
-
-# get all records from Edustar General Information Table
-@app.get("/get")
-def test_post(db:Session=Depends(get_db)):
-    new_post=db.query(model.Information).all()
-    return new_post
-
-
-
-    
-     
-# display user profile
-@app.get("/sqlalchemy")
-def test_post(db:Session=Depends(get_db)):
-    new_post=db.query(model.School).all()
-    return new_post
-
 
 @app.get("/")
 def test():
     return {"message":"Successfully registered"}
 
 
-
-@app.post("/user")
-def login(post:schemas.user,db:Session=Depends(get_db)):
-    # hashed=hash(post.id)
-    # post.id=hashed
-    new=model.Log(**post.dict())
-    db.add(new)
-    db.commit()
-    return {"data":"successful"}
-
-
-
-#update the purticular post
-'''@app.put("/posts/{id}")
-def update(id:int,post:Cl):
-    index=find_index(id)
-    if not index:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail=f"There no id {id}")
-    post_dict=post.dict()
-    post_dict["id"]=id
-    my_posts[index]=post_dict
-    return{"msg":my_posts}'''
-
-# Connecting database
-
-
-'''@app.delete("/sqlalchemy/{id}")
-def delete_post(id:int,db:Session=Depends(get_db)):
-    new_post=db.query(model.Product).filter(model.Product.id==id)
-    if new_post.first()==None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail=f"the id:{id} does not exist")
-    new_post.delete(synchronize_session=False)
-    db.commit()   
-    return response(status_code=status.HTTP_204_NO_CONTENT)'''
-
- 
-
-
-
-@app.post("/sample") 
-def crate_post(post:schemas.POSTS,db:Session=Depends(get_db)):
-    print('works')
-    new_post=model.Sample( **post.dict())
-    db.add(new_post)
-    db.commit()
-    db.refresh(new_post)
-    return {"data":new_post}
-
-
-
-
-
-
-
-
-
-@app.post("/sendposts") 
-def crate_post(post:schemas.create,db:Session=Depends(get_db) , user_id:int=Depends(oauth2.get_current_user)):
-    new_post=model.Posts( **post.dict())
-    db.add(new_post)
-    db.commit()
-    db.refresh(new_post)
-    return {"data":new_post}
-
-
-
-
-@app.get("/gettoken")
-def test_post(db:Session=Depends(get_db), user_id:int=Depends(oauth2.get_current_user)):
-    # new_post=db.query(model.Posts).filter(model.Posts.user_id==user_id.id).all()
-    posts=db.query(model.Posts,func.Count(model.Vote.posts_id).label("votes")).join(model.Vote,model.Vote.posts_id==model.Posts.id).group_by(model.Posts.id).filter(model.Posts.user_id==user_id.id).all()
-    return posts
-
-
-
-@app.put("/puttoken")
-def updated(post:schemas.create,db:Session=Depends(get_db),user_id:int=Depends(oauth2.get_current_user)):
-    updated_post=db.query(model.Posts).filter(model.Posts.user_id==user_id.id)
-    up=updated_post.first()
-    # print(up)
-    if up==None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="Page not found")
-    # update_post=db.query(model.Posts).filter(model.Posts.user_id==user_id.id)
-    updated_post.update(post.dict(),synchronize_session=False)
-    db.commit()
-    return {"id":up.id}
-
-
-
-
-
-
-@app.post("/vote" )
-def vote(vote:schemas.Vote,db:Session=Depends(get_db),current_user:int =Depends(oauth2.get_current_user)):
-    vote_query=db.query(model.Vote).filter(model.Vote.posts_id==vote.posts_id,model.Vote.users_id==current_user.id)
-    found_vote=vote_query.first()
-    if(vote.dir==1):
-        if found_vote:
-            raise HTTPException(status_code=status.HTTP_409_CONFLICT,detail=f"user{current_user.id} has already liked for post{vote.posts_id}")
-        new_vote=model.Vote(posts_id=vote.posts_id,users_id=current_user.id)
-        db.add(new_vote)
-        db.commit()
-        return {"message":"Successfully added vote"}
-
-    else:
-        if not found_vote:
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail=f"user {current_user.id} didn't liked post")
-        vote_query.delete(synchronize_session=False)
-        db.commit()
-        return {"message":"Deleted vote Successfully"}
-
+app.include_router(post.router)
+app.include_router(user.router)

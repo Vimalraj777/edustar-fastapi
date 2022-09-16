@@ -2,17 +2,7 @@ from sqlalchemy import Column,Integer,String,Boolean,ForeignKey,ARRAY , BigInteg
 from .database import Base
 from sqlalchemy.orm import relationship
 
-# class Product(Base):
-#     __tablename__="product1"
-#     id=Column(Integer,primary_key = True, nullable=False)
-#     name=Column(String,nullable=True)
-#     quantity=Column(Integer,nullable=True)
 
-# class login(Base):
-
-#     __tablename__="log"
-#     username=Column(String,nullable=True,primary_key=True),
-#     password=Column(String,nullable=True)
 
 
 
@@ -28,7 +18,6 @@ class School(Base):
     mname=Column(String,nullable=False)
     phnumber=Column(BigInteger,nullable=False)
     address=Column(String,nullable=False)
-#     # user=relationship("")
 
 
 
@@ -160,7 +149,6 @@ class Information(Base):
     nobusessc=Column(String,nullable=True)
     efgfbp=Column(String,nullable=True)
     freetsobts=Column(String,nullable=True)
-    # mmfainsch=Column(String,nullable=False)
     lot=Column(String,nullable=True)
     lct=Column(String,nullable=True)
     tnolb=Column(String,nullable=True)
@@ -179,121 +167,79 @@ class Information(Base):
     phmpfmale=Column(Integer,nullable=True)
     phmtmale=Column(Integer,nullable=True)
     phmtfmale=Column(Integer,nullable=True)
-    # phmTmale=Column(Integer,nullable=False)
-    # phmTfmale=Column(Integer,nullable=False)
     vppmale=Column(Integer,nullable=True)
     vppfmale=Column(Integer,nullable=True)
     vptmale=Column(Integer,nullable=True)
     vptfmale=Column(Integer,nullable=True)
-    # vpTmale=Column(Integer,nullable=False)
-    # vpTfmale=Column(Integer,nullable=False)
     PGTpmale=Column(Integer,nullable=True)
     PGTpfmale=Column(Integer,nullable=True)
     PGTtmale=Column(Integer,nullable=True)
     PGTtfmale=Column(Integer,nullable=True)
-    # PGTTmale=Column(Integer,nullable=False)
-    # PGTTfmale=Column(Integer,nullable=False)	
     TGTpmale=Column(Integer,nullable=True)
     TGTpfmale=Column(Integer,nullable=True)
     TGTtmale=Column(Integer,nullable=True)
     TGTtfmale=Column(Integer,nullable=True)
-    # TGTTmale=Column(Integer,nullable=False)
-    # TGTTfmale=Column(Integer,nullable=False)
     PRTpmale=Column(Integer,nullable=True)
     PRTpfmale=Column(Integer,nullable=True)
     PRTtmale=Column(Integer,nullable=True)
     PRTtfmale=Column(Integer,nullable=True)
-    # PRTTmale=Column(Integer,nullable=False)
-    # PRTTfmale=Column(Integer,nullable=False)
     NTTpmale=Column(Integer,nullable=True)
     NTTpfmale=Column(Integer,nullable=True)
     NTTtmale=Column(Integer,nullable=True)
     NTTtfmale=Column(Integer,nullable=True)
-    # NTTTmale=Column(Integer,nullable=False)
-    # NTTTfmale=Column(Integer,nullable=False)
     UTpmale=Column(Integer,nullable=True)
     UTpfmale=Column(Integer,nullable=True)
     UTtmale=Column(Integer,nullable=True)
     UTtfmale=Column(Integer,nullable=True)
-    # UTTmale=Column(Integer,nullable=False)
-    # UTTfmale=Column(Integer,nullable=False)
     Lpmale=Column(Integer,nullable=True)
     Lpfmale=Column(Integer,nullable=True)
     Ltmale=Column(Integer,nullable=True)
     Ltfmale=Column(Integer,nullable=True)
-    # LTmale=Column(Integer,nullable=False)
-    # LTfmale=Column(Integer,nullable=False)
     Artspmale=Column(Integer,nullable=True)
     Artspfmale=Column(Integer,nullable=True)
     Artstmale=Column(Integer,nullable=True)
     Artstfmale=Column(Integer,nullable=True)
-    # ArtsTmale=Column(Integer,nullable=FTrue
-    # ArtsTfmale=Column(Integer,nullable=False)
     Cpmale=Column(Integer,nullable=True)
     Cpfmale=Column(Integer,nullable=True)
     Ctmale=Column(Integer,nullable=True)
     Ctfmale=Column(Integer,nullable=True)
-    # CTmale=Column(Integer,nullable=False)
-    # CTfmale=Column(Integer,nullable=False)
     CLpmale=Column(Integer,nullable=True)
     CLpfmale=Column(Integer,nullable=True)
     CLtmale=Column(Integer,nullable=True)
     CLtfmale=Column(Integer,nullable=True)
-    # CLTmale=Column(Integer,nullable=False)
-    # CLTfmale=Column(Integer,nullable=False)
     FMpmale=Column(Integer,nullable=True)
     FMpfmale=Column(Integer,nullable=True)
     FMtmale=Column(Integer,nullable=True)
     FMtfmale=Column(Integer,nullable=True)
-    # FMTmale=Column(Integer,nullable=False)
-    # FMTfmale=Column(Integer,nullable=False)
     Nursepmale=Column(Integer,nullable=True)
     Nursepfmale=Column(Integer,nullable=True)
     Nursetmale=Column(Integer,nullable=True)
     Nursetfmale=Column(Integer,nullable=True)
-    # NurseTmale=Column(Integer,nullable=False)
-    # NurseTfmale=Column(Integer,nullable=False)
     PTpmale=Column(Integer,nullable=True)
     PTpfmale=Column(Integer,nullable=True)
     PTtmale=Column(Integer,nullable=True)
     PTtfmale=Column(Integer,nullable=True)
-    # PTTmale=Column(Integer,nullable=False)
-    # PTTfmale=Column(Integer,nullable=False)
-    # Totalpmale=Column(Integer,nullable=False)
-    # Totalpfmale=Column(Integer,nullable=False)
-    # Totaltmale=Column(Integer,nullable=False)
-    # Totaltfmale=Column(Integer,nullable=False)
-    # TotalTmale=Column(Integer,nullable=False)
-    # TotalTfmale=Column(Integer,nullable=False)
     ofmaper=Column(Integer,nullable=True)
     ofmatemp=Column(Integer,nullable=True)
     ofmapart=Column(Integer,nullable=True)
-    # ofmatotal=Column(Integer,nullable=False)
     ofasper=Column(Integer,nullable=True)
     ofastemp=Column(Integer,nullable=True)
     ofaspart=Column(Integer,nullable=True)
-    # ofastotal=Column(Integer,nullable=False)
     clerkper=Column(Integer,nullable=True)
     clerktemp=Column(Integer,nullable=True)
     clerkpart=Column(Integer,nullable=True)
-    # clerktotal=Column(Integer,nullable=False)
     labper=Column(Integer,nullable=True)
     labtemp=Column(Integer,nullable=True)
     labpart=Column(Integer,nullable=True)
-    # labtotal=Column(Integer,nullable=False)
     accountper=Column(Integer,nullable=True)
     accounttemp=Column(Integer,nullable=True)
     accountpart=Column(Integer,nullable=True)
-    # accounttotal=Column(Integer,nullable=False)
     peonsper=Column(Integer,nullable=True)
     peonstemp=Column(Integer,nullable=True)
     peonspart=Column(Integer,nullable=True)
-    # peonstotal=Column(Integer,nullable=False)
     othersper=Column(Integer,nullable=True)
     otherstemp=Column(Integer,nullable=True)
     otherspart=Column(Integer,nullable=True)
-    # otherstotal=Column(Integer,nullable=False)
-
     no_of_activities=Column(Integer,nullable=True)
     no_of_groups=Column(Integer,nullable=True)
     no_of_community=Column(Integer,nullable=True)
@@ -315,7 +261,6 @@ class Information(Base):
     no_of_interprograms_state=Column(Integer,nullable=True)
     no_of_interprograms_national=Column(Integer,nullable=True)
     no_of_interprograms_international=Column(Integer,nullable=True)
-
     acad_year_begins=Column(String,nullable=True)
     acad_year_ends=Column(String,nullable=True)
     workingdays_21_22=Column(Integer,nullable=True)
@@ -344,17 +289,6 @@ class Information(Base):
     school_shift=Column(String,nullable=True)
     scholarship= Column(ARRAY(String),nullable=True)
     enrollment= Column(ARRAY(String),nullable=True)
-
-
-
-
-
-
-
-# class Login(Base):
-#     __tablename__="login"
-#     id=Column(String,nullable=False,primary_key=True)
-#     name=Column(String,nullable=False)
 
 
 
@@ -392,9 +326,6 @@ class Vote(Base):
 
 
 
-# class Sample(Base):
-#     __tablename__="sample"
-#     username=Column(String,nullable=False,primary_key=True)
-#     password=Column(String,nullable=False)
+
 
 
