@@ -22,6 +22,7 @@ client=TestClient(app)
 
 @pytest.fixture()
 def session():
+    print(f"postgresql://{settings.database_username}:{settings.database_password}@{settings.database_hostname}:{settings.database_port}/{settings.database_name}_test")
     Base.metadata.drop_all(bind=engine)
     Base.metadata.create_all(bind=engine)
     db=TestingSessionlocal()
