@@ -32,7 +32,7 @@ oauth2_scheme=OAuth2PasswordBearer(tokenUrl='login')
 
 
 
-model.Base.metadata.create_all(bind=engine)
+# model.Base.metadata.create_all(bind=engine)
 
 
 app=FastAPI()
