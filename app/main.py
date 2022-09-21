@@ -1,5 +1,5 @@
 from fastapi.middleware.cors import CORSMiddleware
-from . import oauth2
+# from . import oauth2
 from fastapi import Body, FastAPI,Response,status,HTTPException
 from random import randrange
 from . import model

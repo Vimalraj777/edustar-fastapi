@@ -1,15 +1,75 @@
+from ctypes.wintypes import PINT
+from pickle import GLOBAL
+from typing import Set
 from fastapi import Body, FastAPI,Response,status,HTTPException , APIRouter , Depends
 from sqlalchemy.orm import Session , relationship
 from ..database import get_db
 from .. import model , schemas , utils
 from fastapi.security.oauth2 import OAuth2PasswordRequestForm
 from .. import oauth2
+import random
 
 
 
 router=APIRouter(
     tags=['Users']
 )
+
+
+pin=[]
+@router.post("/forgot")
+def forgot(post:schemas.forgot,db:Session=Depends(get_db)):
+    data1=db.query(model.School).filter(model.School.id==post.id , model.School.username==post.username)
+    if data1.first():
+        data={}
+        index = -1
+        rand=random.randint(111111,999999)
+        if pin != []:
+            for i in range(len(pin)):
+                if pin[i]['id'] == post.id:
+                    index = i
+
+            if index != -1:
+                pin[index]['pin'] = rand
+            else:    
+                data={'id':post.id,'pin':rand}
+                pin.append(data)
+        else:
+            data={'id':post.id,'pin':rand}
+            pin.append(data)    
+
+        print(pin)
+        for i in range(len(pin)):
+                if pin[i]['id'] == post.id:
+                    index = i
+        return pin[index]['pin']
+    else:
+        return HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="Invalid RollNo or Username")
+
+
+
+@router.post("/change")
+def change_password(post:schemas.changePassword,db:Session=Depends(get_db)):
+        data1=db.query(model.School).filter(model.School.id==post.id)
+        if data1.first():
+            print("yes",pin)
+            for i in range(len(pin)):
+                print(i)
+                if pin[i]['id'] == post.id:
+                    if pin[i]['pin']==post.otp:
+                        data1.update({'password':post.password},synchronize_session=False)
+                        db.commit()
+                        return data1.first()
+                    else:
+                        return HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="Invalid OTP")
+                else:
+                    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="Generate Your OTP first!!")
+        else:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="Invalid!!!")
+
+
+
+
 
 @router.post("/Login")
 def login(user_credentials:OAuth2PasswordRequestForm=Depends(),db:Session=Depends(get_db)):
@@ -22,6 +82,11 @@ def login(user_credentials:OAuth2PasswordRequestForm=Depends(),db:Session=Depend
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="invalid credentials")
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="invalid credentials")
     
+
+
+
+        
+   
 
 
 @router.get("/getdata")

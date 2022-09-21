@@ -55,6 +55,16 @@ class user(BaseModel):
 class tokenData(BaseModel):
     id:Optional[str]=None
 
+class forgot(BaseModel):
+    id:str
+    username:str
+
+class changePassword(BaseModel):
+    otp:int
+    id:str
+    username:str
+    password:str
+    
 
 
 # class student(BaseModel):
