@@ -13,4 +13,9 @@ def test_put_post(authorized_client,test_user):
     print(res.status_code)
     assert res.json().get('id')==test_user['id']
 
+def test_root(client):
+    res=client.get('/')
+    print(res.json().get('message'))
+
+
 

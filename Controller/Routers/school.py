@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session , relationship
 from Utils import utils
 from Databases.database import get_db
 # from Model import user_profile
-from Model import school_profile
+from Model import school_model
 from Schema import school_schema
 from Authorization import oauth2
 
@@ -39,7 +39,7 @@ def crate_post(post:dict,db:Session=Depends(get_db), user=Depends(oauth2.get_cur
     post['scholarship']=set_data(post['scholarship'])
     post['enrollment']=set_data(post['enrollment'])
     # print(post['scholarship'])
-    new_post=school_profile.Information( **post)
+    new_post=school_model.Information( **post)
     db.add(new_post)
     db.commit()
     db.refresh(new_post)
@@ -49,7 +49,7 @@ def crate_post(post:dict,db:Session=Depends(get_db), user=Depends(oauth2.get_cur
 
 @router.get("/profileget")
 def test_post(db:Session=Depends(get_db),user_id:str=Depends(oauth2.get_current_user)):
-    new_post=db.query(school_profile.Information).filter(school_profile.Information.id==user_id.id)
+    new_post=db.query(school_model.Information).filter(school_model.Information.id==user_id.id)
     new=new_post.first()
     return new
 
@@ -57,7 +57,7 @@ def test_post(db:Session=Depends(get_db),user_id:str=Depends(oauth2.get_current_
 # update the retrieved edustar School Profile details record.
 @router.put("/profileput")
 def updated(post:dict,db:Session=Depends(get_db), user=Depends(oauth2.get_current_user)):
-    updated_post=db.query(school_profile.Information).filter(school_profile.Information.id==user.id)
+    updated_post=db.query(school_model.Information).filter(school_model.Information.id==user.id)
     up=updated_post.first()
     if up==None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="Page not found")
@@ -72,7 +72,7 @@ def updated(post:dict,db:Session=Depends(get_db), user=Depends(oauth2.get_curren
 # get specific record for edustar  School Profile project
 @router.get("/get/{id}")
 def test_post(id:int,db:Session=Depends(get_db)):
-    new_post=db.query(school_profile.Information).filter(school_profile.Information.id==id)
+    new_post=db.query(school_model.Information).filter(school_model.Information.id==id)
     new=new_post.first()
     return {"data":new}
 
@@ -80,6 +80,6 @@ def test_post(id:int,db:Session=Depends(get_db)):
 # get all records from Edustar School Profile 
 @router.get("/get")
 def test_post(db:Session=Depends(get_db)):
-    new_post=db.query(school_profile.Information).all()
+    new_post=db.query(school_model.Information).all()
     return new_post
 

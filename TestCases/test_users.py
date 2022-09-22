@@ -18,9 +18,6 @@ def test_incorrect_login(client,test_user):
     assert res.json().get('detail')=="invalid credentials"
     
 
-def test_root(client):
-    res=client.get('/')
-    print(res.json().get('message'))
 
 
 

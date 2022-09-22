@@ -5,7 +5,7 @@ from Schema import user_schema
 from fastapi import Depends
 from fastapi import HTTPException , status
 from fastapi.security.oauth2 import OAuth2PasswordBearer 
-from Model import school_profile , user_profile
+from Model import school_model , user_model
 from sqlalchemy.orm import Session
 from Databases.database import get_db
 from Configuration.config import settings
@@ -40,6 +40,6 @@ def get_current_user(token:str=Depends(oauth2_scheme),db:Session=Depends(get_db)
     credential_exception=HTTPException(status_code=status.HTTP_401_UNAUTHORIZED , detail=f"could not authenticate credentials")
     user= verify_token(token,credential_exception)
     print("data",user)
-    cur_user=db.query(user_profile.School).filter(user_profile.School.username==user.id).first() 
+    cur_user=db.query(user_model.School).filter(user_model.School.username==user.id).first() 
     print(cur_user.id)
     return cur_user

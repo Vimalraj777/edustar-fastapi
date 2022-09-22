@@ -5,7 +5,7 @@ from fastapi import Response,status,HTTPException , APIRouter , Depends
 from sqlalchemy.orm import Session , relationship
 from Utils import utils
 from Databases.database import get_db
-from Model import user_profile
+from Model import user_model
 from Schema import login_schema , user_schema
 from fastapi.security.oauth2 import OAuth2PasswordRequestForm
 from Authorization import oauth2
@@ -21,7 +21,7 @@ router=APIRouter(
 pin=[]
 @router.post("/forgot")
 def forgot(post:login_schema.forgot,db:Session=Depends(get_db)):
-    data1=db.query(user_profile.School).filter(user_profile.School.id==post.id , user_profile.School.username==post.username)
+    data1=db.query(user_model.School).filter(user_model.School.id==post.id , user_model.School.username==post.username)
     if data1.first():
         data={}
         index = -1
@@ -52,7 +52,7 @@ def forgot(post:login_schema.forgot,db:Session=Depends(get_db)):
 
 @router.post("/change")
 def change_password(post:login_schema.changePassword,db:Session=Depends(get_db)):
-        data1=db.query(user_profile.School).filter(user_profile.School.id==post.id)
+        data1=db.query(user_model.School).filter(user_model.School.id==post.id)
         if data1.first():
             print("yes",pin)
             for i in range(len(pin)):
@@ -75,9 +75,9 @@ def change_password(post:login_schema.changePassword,db:Session=Depends(get_db))
 
 @router.post("/Login")
 def login(user_credentials:OAuth2PasswordRequestForm=Depends(),db:Session=Depends(get_db)):
-    data1=db.query(user_profile.School).filter(user_profile.School.username==user_credentials.username).first()
+    data1=db.query(user_model.School).filter(user_model.School.username==user_credentials.username).first()
     if data1:
-        data2=db.query(user_profile.School).filter(user_profile.School.password==user_credentials.password).first()
+        data2=db.query(user_model.School).filter(user_model.School.password==user_credentials.password).first()
         if data2:
             access_token=oauth2.create_access_token(data={"Name":user_credentials.username})
             return {"token":access_token}       
@@ -100,7 +100,7 @@ def test_post(db:Session=Depends(get_db), user=Depends(oauth2.get_current_user))
 #register for user profile
 @router.post("/sqlalchemy") 
 def register(post:user_schema.Posts,db:Session=Depends(get_db)):
-    new_post=user_profile.School( **post.dict())
+    new_post=user_model.School( **post.dict())
     db.add(new_post)
     db.commit()
     db.refresh(new_post)
@@ -110,7 +110,7 @@ def register(post:user_schema.Posts,db:Session=Depends(get_db)):
 #retrieve values for user profile
 @router.get("/profile")
 def get_registers(db:Session=Depends(get_db),user_id:int=Depends(oauth2.get_current_user)):
-    new_post=db.query(user_profile.School).filter(user_profile.School.id==user_id.id)
+    new_post=db.query(user_model.School).filter(user_model.School.id==user_id.id)
     new=new_post.first()
     return new
 
@@ -118,7 +118,7 @@ def get_registers(db:Session=Depends(get_db),user_id:int=Depends(oauth2.get_curr
 #update user profile
 @router.put("/sqlalchemy")
 def updated(post:user_schema.Posts,db:Session=Depends(get_db), user=Depends(oauth2.get_current_user)):
-    updated_post=db.query(user_profile.School).filter(user_profile.School.id==user.id)
+    updated_post=db.query(user_model.School).filter(user_model.School.id==user.id)
     up=updated_post.first()
     if up==None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="Page not found")
@@ -130,7 +130,7 @@ def updated(post:user_schema.Posts,db:Session=Depends(get_db), user=Depends(oaut
 #delete user profile unique record by id
 @router.delete("/deleted")
 def delete_post(db:Session=Depends(get_db), user=Depends(oauth2.get_current_user)):
-    new_post=db.query(user_profile.School).filter(user_profile.School.id==user.id)
+    new_post=db.query(user_model.School).filter(user_model.School.id==user.id)
     if new_post.first()==None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail=f"the id:{id} does not exist")
     new_post.delete(synchronize_session=False)
@@ -143,5 +143,5 @@ def delete_post(db:Session=Depends(get_db), user=Depends(oauth2.get_current_user
 # display user profile
 @router.get("/sqlalchemy")
 def test_post(db:Session=Depends(get_db)):
-    new_post=db.query(user_profile.School).all()
+    new_post=db.query(user_model.School).all()
     return new_post
