@@ -3,7 +3,6 @@ from pickle import GLOBAL
 from typing import Set
 from fastapi import Body, FastAPI,Response,status,HTTPException , APIRouter , Depends
 from sqlalchemy.orm import Session , relationship
-
 from Utils import utils
 from Databases.database import get_db
 from Model import user_profile
