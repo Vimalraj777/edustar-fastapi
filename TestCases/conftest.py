@@ -2,7 +2,7 @@ from http import client
 import pytest
 from fastapi.testclient import TestClient
 from Controller.main import app
-from Schema import schemas
+from Schema import login_schema , user_schema , school_schema
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker , Session
