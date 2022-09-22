@@ -1,14 +1,14 @@
 from http import client
 import pytest
 from fastapi.testclient import TestClient
-from app.main import app
-from app import schemas
+from Controller.main import app
+from ..Schema import *
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker , Session
-from app.config import settings
-from app.database import get_db
-from app.database import Base
+from ..Configuration.config import settings
+from ..Databases.database import get_db
+from ..Databases.database import Base
 # from .database import client , session 
 # from fastapi import responses , requests
 

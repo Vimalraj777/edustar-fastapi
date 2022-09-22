@@ -3,52 +3,11 @@ from pydantic import BaseModel
 from typing import Optional
 from pydantic import conint
 
-class Posts(BaseModel):
-    id:str
-    username:str
-    password:str
-    name:str
-    age:str
-    gender:str
-    fname:str
-    mname:str
-    phnumber:int
-    address:str
-
-
-    class Config:
-        orm_mode = True
-
-
-
-
-
-
-
-
-class Token(BaseModel):
-    access_token:str
-    token_type:str
-
-
-
-
-    
-
 
 class tokenData(BaseModel):
     id:Optional[str]=None
 
-class forgot(BaseModel):
-    id:str
-    username:str
 
-class changePassword(BaseModel):
-    otp:int
-    id:str
-    username:str
-    password:str
-    
 
 
 class student(BaseModel):

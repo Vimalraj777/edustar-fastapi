@@ -1,7 +1,7 @@
 import importlib
 from jose import JWTError , jwt
 from datetime import datetime , timedelta
-from Schema import schemas 
+from Schema import user_schema
 from fastapi import Depends
 from fastapi import HTTPException , status
 from fastapi.security.oauth2 import OAuth2PasswordBearer 
@@ -32,7 +32,7 @@ def verify_token(token:str,credential_exception):
     id:str=payload.get("Name")
     if id is None:
         raise credential_exception
-    token_data=schemas.tokenData(id=id)
+    token_data=user_schema.tokenData(id=id)
     return token_data
 
 

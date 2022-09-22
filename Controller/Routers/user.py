@@ -1,13 +1,12 @@
 from ctypes.wintypes import PINT
 from pickle import GLOBAL
 from typing import Set
-from fastapi import Body, FastAPI,Response,status,HTTPException , APIRouter , Depends
+from fastapi import Response,status,HTTPException , APIRouter , Depends
 from sqlalchemy.orm import Session , relationship
 from Utils import utils
 from Databases.database import get_db
 from Model import user_profile
-from Model import school_profile
-from Schema import schemas
+from Schema import login_schema , user_schema
 from fastapi.security.oauth2 import OAuth2PasswordRequestForm
 from Authorization import oauth2
 import random
@@ -21,7 +20,7 @@ router=APIRouter(
 
 pin=[]
 @router.post("/forgot")
-def forgot(post:schemas.forgot,db:Session=Depends(get_db)):
+def forgot(post:login_schema.forgot,db:Session=Depends(get_db)):
     data1=db.query(user_profile.School).filter(user_profile.School.id==post.id , user_profile.School.username==post.username)
     if data1.first():
         data={}
@@ -52,7 +51,7 @@ def forgot(post:schemas.forgot,db:Session=Depends(get_db)):
 
 
 @router.post("/change")
-def change_password(post:schemas.changePassword,db:Session=Depends(get_db)):
+def change_password(post:login_schema.changePassword,db:Session=Depends(get_db)):
         data1=db.query(user_profile.School).filter(user_profile.School.id==post.id)
         if data1.first():
             print("yes",pin)
@@ -100,7 +99,7 @@ def test_post(db:Session=Depends(get_db), user=Depends(oauth2.get_current_user))
 
 #register for user profile
 @router.post("/sqlalchemy") 
-def register(post:schemas.Posts,db:Session=Depends(get_db)):
+def register(post:user_schema.Posts,db:Session=Depends(get_db)):
     new_post=user_profile.School( **post.dict())
     db.add(new_post)
     db.commit()
@@ -118,7 +117,7 @@ def get_registers(db:Session=Depends(get_db),user_id:int=Depends(oauth2.get_curr
 
 #update user profile
 @router.put("/sqlalchemy")
-def updated(post:schemas.Posts,db:Session=Depends(get_db), user=Depends(oauth2.get_current_user)):
+def updated(post:user_schema.Posts,db:Session=Depends(get_db), user=Depends(oauth2.get_current_user)):
     updated_post=db.query(user_profile.School).filter(user_profile.School.id==user.id)
     up=updated_post.first()
     if up==None:
@@ -139,74 +138,8 @@ def delete_post(db:Session=Depends(get_db), user=Depends(oauth2.get_current_user
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 
-def setData(data):
-    key=[]
-    get=[]
-    set=[]
-    for list in data:
-        key =list.keys()
-        break
-    for list in data:
-        for value in key:
-            get.append(list[value])
-        set.append(get)
-        get=[]
-    return set        
 
-
-
-# post records for edustar School Profile
-@router.post("/post") 
-def crate_post(post:dict,db:Session=Depends(get_db), user=Depends(oauth2.get_current_user)):
-    post['scholarship']=setData(post['scholarship'])
-    post['enrollment']=setData(post['enrollment'])
-    # print(post['scholarship'])
-    new_post=school_profile.Information( **post)
-    db.add(new_post)
-    db.commit()
-    db.refresh(new_post)
-    return {"data":new_post.id}
-
-
-
-@router.get("/profileget")
-def test_post(db:Session=Depends(get_db),user_id:str=Depends(oauth2.get_current_user)):
-    new_post=db.query(school_profile.Information).filter(school_profile.Information.id==user_id.id)
-    new=new_post.first()
-    return new
-
-
-# update the retrieved edustar School Profile details record.
-@router.put("/profileput")
-def updated(post:dict,db:Session=Depends(get_db), user=Depends(oauth2.get_current_user)):
-    updated_post=db.query(school_profile.Information).filter(school_profile.Information.id==user.id)
-    up=updated_post.first()
-    if up==None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="Page not found")
-    post['scholarship']=setData(post['scholarship'])
-    post['enrollment']=setData(post["enrollment"])
-    updated_post.update(post,synchronize_session=False)
-    db.commit()
-    return {"id":up.id}
-
-
-
-# get specific record for edustar  School Profile project
-@router.get("/get/{id}")
-def test_post(id:int,db:Session=Depends(get_db)):
-    new_post=db.query(school_profile.Information).filter(school_profile.Information.id==id)
-    new=new_post.first()
-    return {"data":new}
-
-
-# get all records from Edustar School Profile 
-@router.get("/get")
-def test_post(db:Session=Depends(get_db)):
-    new_post=db.query(school_profile.Information).all()
-    return new_post
-
-
-     
+ 
 # display user profile
 @router.get("/sqlalchemy")
 def test_post(db:Session=Depends(get_db)):
