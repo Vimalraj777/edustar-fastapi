@@ -1,6 +1,6 @@
 import pytest
 from jose import jwt
-from app.config import settings
+from Configuration.config import settings
 
 
 def test_login_user(client , test_user):
