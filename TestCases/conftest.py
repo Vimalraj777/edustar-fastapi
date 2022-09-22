@@ -6,10 +6,10 @@ from app import schemas
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker , Session
-from app.config import settings
+from Configuration.config import settings
 from app.database import get_db
 from app.database import Base
-from app.oauth2 import create_access_token
+from Authorization.oauth2 import create_access_token
 # from .database import client , session 
 # from fastapi import responses , requests
 

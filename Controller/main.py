@@ -1,21 +1,13 @@
-from fastapi.middleware.cors import CORSMiddleware
-# from . import oauth2
-from fastapi import Body, FastAPI,Response,status,HTTPException
 from random import randrange
-from . import model
-from .database import engine,Sessionlocal,get_db
-from sqlalchemy.orm import Session , relationship
-from fastapi import Depends
-from . import schemas
-from .utils import hash
-from . import utils
-from . import oauth2
-from fastapi.security.oauth2 import OAuth2PasswordRequestForm
+from Databases.database import engine
+from fastapi import Body, Depends, FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import OAuth2PasswordBearer
-from sqlalchemy import func 
-from .routers import post , user
-
-
+# from fastapi.security.oauth2 import OAuth2PasswordRequestForm
+from sqlalchemy import func
+from sqlalchemy.orm import Session, relationship
+from Utils.utils import hash
+from Controller.Routers import user
 
 oauth2_scheme=OAuth2PasswordBearer(tokenUrl='login')
 
@@ -47,5 +39,4 @@ def test():
     return {"message":"Successfully registered"}
 
 
-app.include_router(post.router)
 app.include_router(user.router)

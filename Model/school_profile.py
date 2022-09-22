@@ -1,25 +1,6 @@
 from sqlalchemy import Column,Integer,String,Boolean,ForeignKey,ARRAY , BigInteger
-from .database import Base
+from Databases.database import Base
 from sqlalchemy.orm import relationship
-
-
-
-
-
-class School(Base):
-    __tablename__="studentdata"
-    id=Column(String,nullable=False,primary_key=True)
-    username=Column(String,nullable=False)
-    password=Column(String,nullable=False)
-    name=Column(String,nullable=False)
-    age=Column(Integer,nullable=False)
-    gender=Column(String,nullable=False)
-    fname=Column(String,nullable=False)
-    mname=Column(String,nullable=False)
-    phnumber=Column(BigInteger,nullable=False)
-    address=Column(String,nullable=False)
-
-
 
 
 class Information(Base):
@@ -289,37 +270,3 @@ class Information(Base):
     school_shift=Column(String,nullable=True)
     scholarship= Column(ARRAY(String),nullable=True)
     enrollment= Column(ARRAY(String),nullable=True)
-
-
-
-
-class Log(Base):
-    __tablename__="log"
-    title=Column(String,nullable=False,primary_key=True)
-    content=Column(String,nullable=False)
-
-
-class Users(Base):
-        __tablename__="users"
-        id=Column(Integer,nullable=False,primary_key=True,autoincrement=True)
-        username=Column(String,nullable=False)
-        password=Column(String,nullable=False)
-        name=Column(String,nullable=False)   
-        gender=Column(Boolean,nullable=True,default=True)
-
-class Posts(Base):
-    __tablename__="posts"
-    id=Column(Integer,nullable=False,primary_key=True,autoincrement=True)
-    user_id=Column(Integer,ForeignKey("users.id",ondelete="CASCADE"),nullable=False)
-    title=Column(String,nullable=False)
-    content=Column(String,nullable=False)
-    published=Column(Boolean,nullable=False,default=True)
-    user=relationship("Users")
-
-
-
-class Vote(Base):
-    __tablename__="vote"
-    posts_id=Column(Integer,ForeignKey("posts.id",ondelete='CASCADE'),primary_key=True)
-    users_id=Column(Integer,ForeignKey("users.id",ondelete='CASCADE'),primary_key=True)
-    
