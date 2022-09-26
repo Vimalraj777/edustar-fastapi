@@ -7,7 +7,7 @@ from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy import func
 from sqlalchemy.orm import Session, relationship
 from Utils.utils import hash
-from Controller.Routers import user
+from Controller.Routers import user , school
 
 oauth2_scheme=OAuth2PasswordBearer(tokenUrl='login')
 
@@ -40,3 +40,4 @@ def test():
 
 
 app.include_router(user.router)
+app.include_router(school.router)

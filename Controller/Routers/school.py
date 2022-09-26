@@ -16,7 +16,7 @@ router=APIRouter(
     tags=['Users']
 )
 
-
+# a function to split the value alone as a list from a dictionary 
 def set_data(data):
     key=[]
     get=[]
@@ -33,7 +33,7 @@ def set_data(data):
 
 
 
-# post records for edustar School Profile
+# Insert the data of school Profile
 @router.post("/post") 
 def crate_post(post:dict,db:Session=Depends(get_db), user=Depends(oauth2.get_current_user)):
     post['scholarship']=set_data(post['scholarship'])
@@ -47,16 +47,20 @@ def crate_post(post:dict,db:Session=Depends(get_db), user=Depends(oauth2.get_cur
 
 
 
+# This method is used to get the logged in user's record from 'School Profile' Data Table.
 @router.get("/profileget")
 def test_post(db:Session=Depends(get_db),user_id:str=Depends(oauth2.get_current_user)):
+    user_id.id=str(user_id.id)
     new_post=db.query(school_model.Information).filter(school_model.Information.id==user_id.id)
     new=new_post.first()
+    print(new)
     return new
 
 
-# update the retrieved edustar School Profile details record.
-@router.put("/profileput")
+# This method is used to update the School Profile's record.
+@router.put("/profileput") 
 def updated(post:dict,db:Session=Depends(get_db), user=Depends(oauth2.get_current_user)):
+    user.id=str(user.id)
     updated_post=db.query(school_model.Information).filter(school_model.Information.id==user.id)
     up=updated_post.first()
     if up==None:
@@ -69,7 +73,7 @@ def updated(post:dict,db:Session=Depends(get_db), user=Depends(oauth2.get_curren
 
 
 
-# get specific record for edustar  School Profile project
+# This method is used to get Specific record from 'School Profile' Data table without Token Validation
 @router.get("/get/{id}")
 def test_post(id:int,db:Session=Depends(get_db)):
     new_post=db.query(school_model.Information).filter(school_model.Information.id==id)
@@ -77,7 +81,7 @@ def test_post(id:int,db:Session=Depends(get_db)):
     return {"data":new}
 
 
-# get all records from Edustar School Profile 
+# get all records from  'School Profile' Table. 
 @router.get("/get")
 def test_post(db:Session=Depends(get_db)):
     new_post=db.query(school_model.Information).all()
