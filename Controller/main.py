@@ -20,7 +20,8 @@ app=FastAPI()
 
 origins=[
     "http://localhost:4200",
-    "https://edustar-ui.herokuapp.com"
+    "https://edustar-ui.herokuapp.com",
+    "https://dbstar-ui.herokuapp.com"
 ]
 
 app.add_middleware(
