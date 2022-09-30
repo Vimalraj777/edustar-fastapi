@@ -47,7 +47,7 @@ def client(session):
 @pytest.fixture
 def test_user(client):
     user_data={"id":"19297","username":"Vimal","password":"vimal@123","name":"Vimal Raj","age":20,"gender":"male","fname":"Charles","mname":"Saral","phnumber":6383279632,"address":"550A,East Street, Eleanganny."}
-    res=client.post("/sqlalchemy",json=user_data)
+    res=client.post("/register",json=user_data)
     new_user=res.json()
     return new_user
 
