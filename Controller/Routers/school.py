@@ -2,6 +2,7 @@ from ctypes.wintypes import PINT
 import imp
 from multiprocessing import synchronize
 from pickle import GLOBAL
+from pyexpat import model
 from typing import Set
 # from webbrowser import get
 from fastapi import status,HTTPException , APIRouter , Depends
@@ -207,6 +208,10 @@ def getSchoolPost(id:str,db:Session=Depends(get_db)):
 @router.put("/updatePostSchool/{id}")
 def updatePostSchool(id:str,data:dict,db:Session=Depends(get_db)):
         updated_post=db.query(school_model.Information).filter(school_model.Information.id==id)
+        if data.get('scholarship'):    
+            data['scholarship']=set_data(data['scholarship'])
+        if data.get('enrollment'):
+            data['enrollment']=set_data(data["enrollment"])
         updated_post.update(data,synchronize_session=False)
         db.commit()
         return 'success'
@@ -216,29 +221,34 @@ def updatePostSchool(id:str,data:dict,db:Session=Depends(get_db)):
 def createPost(post:dict,db:Session=Depends(get_db)):
     checkData=db.query(school_model.Information).filter(school_model.Information.id==post['profileId'])
     if checkData.first():
-        print(post)
-        print(post['profileId'])
         updated_post=db.query(school_model.Information).filter(school_model.Information.id==post['profileId'])
         post.pop('profileId')
+        if post.get('scholarship'):    
+            post['scholarship']=set_data(post['scholarship'])
+        if post.get('enrollment'):
+            post['enrollment']=set_data(post["enrollment"])
         updated_post.update(post,synchronize_session=False)
         db.commit()
         return {"data":'success put'}
     else:
         post.pop('profileId')
+        if post.get('scholarship'):    
+            post['scholarship']=set_data(post['scholarship'])
+        if post.get('enrollment'):
+            post['enrollment']=set_data(post["enrollment"])
         new_post=school_model.Information(**post)
         db.add(new_post)
         db.commit()
         db.refresh(new_post)
         return {"data":'success post'}
 
-    # print(post['id'])
-    # if post.get('scholarship'):
-    #     post['scholarship']=set_data(post['scholarship'])
-    # if post.get('enrollment'):
-    #     post['enrollment']=set_data(post['enrollment'])
-    # new_post=school_model.Information(**post)
-    # db.add(new_post)
-    # db.commit()
-    # # db.refresh(new_post)
-    # return {"data":'success'}
+    
+
+
+@router.delete('/deleteSchool/{id}')
+def deleteSchool(id:str,db:Session=Depends(get_db)):
+    result=db.query(school_model.Information).filter(school_model.Information.id==id).first()
+    db.delete(result)
+    db.commit()
+    return {'result':'deleted successfully'}    
 

@@ -102,9 +102,11 @@ def test_post(db:Session=Depends(get_db), user=Depends(oauth2.get_current_user))
 def register(post:user_schema.Posts,db:Session=Depends(get_db)):
     new_post=user_model.School( **post.dict())
     db.add(new_post)
-    school_record=school_model.Information(id=post.id)
-    db.add(school_record)
-    print(school_record)
+    check=db.query(school_model.Information).filter(school_model.Information.id==post.id)
+    if not check.first():
+        school_record=school_model.Information(id=post.id)
+        db.add(school_record)
+        print(school_record)
     db.commit()
     db.refresh(new_post)
     return new_post
