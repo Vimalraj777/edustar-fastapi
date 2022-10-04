@@ -71,7 +71,7 @@ def change_password(post:login_schema.changePassword,db:Session=Depends(get_db))
 
 
 
-
+# Login method of user profile 
 
 @router.post("/Login")
 def login(user_credentials:OAuth2PasswordRequestForm=Depends(),db:Session=Depends(get_db)):

@@ -1,7 +1,4 @@
-# def test_get_all_posts(authorized_client):
-#     res=authorized_client.get("/profile")
-#     assert res.status_code==200
-#     print(res.json())
+
 
 def test_get_posts_unauthorized(client):
     res=client.get("/getuser")
@@ -14,7 +11,7 @@ def test_put_post(authorized_client,test_user):
     assert res.json().get('id')==test_user['id']
 
 def test_root(client):
-    res=client.get('/')
+    res=client.get('/')             
     print(res.json().get('message'))
 
 
