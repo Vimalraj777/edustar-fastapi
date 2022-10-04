@@ -1,6 +1,5 @@
-from sqlalchemy import Column,Integer,String,Boolean,ForeignKey,ARRAY , BigInteger
+from sqlalchemy import Column,Integer,String,Boolean,ARRAY
 from .user_model import Base
-from sqlalchemy.orm import relationship
 
 
 class Information(Base):

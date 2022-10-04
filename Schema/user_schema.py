@@ -1,7 +1,5 @@
-from time import time
 from pydantic import BaseModel
 from typing import Optional
-from pydantic import conint
 
 
 class Posts(BaseModel):

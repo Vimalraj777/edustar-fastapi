@@ -1,9 +1,5 @@
-from ctypes.wintypes import PINT
-from pickle import GLOBAL
-from typing import Set
 from fastapi import Response,status,HTTPException , APIRouter , Depends
-from sqlalchemy.orm import Session , relationship
-from Utils import utils
+from sqlalchemy.orm import Session
 from Databases.database import get_db
 from Model import user_model , school_model
 from Schema import login_schema , user_schema

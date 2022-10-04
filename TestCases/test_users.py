@@ -1,4 +1,3 @@
-import pytest
 from jose import jwt
 from Configuration.config import settings
 

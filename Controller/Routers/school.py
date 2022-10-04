@@ -1,20 +1,8 @@
-from ctypes.wintypes import PINT
-import imp
-from multiprocessing import synchronize
-from pickle import GLOBAL
-from pyexpat import model
-from typing import Set
-# from webbrowser import get
 from fastapi import status,HTTPException , APIRouter , Depends
-from sqlalchemy import false
-from sqlalchemy.orm import Session , relationship
-from Utils import utils
+from sqlalchemy.orm import Session
 from Databases.database import get_db
-# from Model import user_profile
 from Model import school_model
-from Schema import school_schema
 from Authorization import oauth2
-from sqlalchemy.orm import load_only
 
 
 

@@ -1,16 +1,12 @@
-from http import client
 import pytest
 from fastapi.testclient import TestClient
 from Controller.main import app
 from ..Schema import *
 from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker , Session
+from sqlalchemy.orm import sessionmaker
 from ..Configuration.config import settings
 from ..Databases.database import get_db
 from ..Databases.database import Base
-# from .database import client , session 
-# from fastapi import responses , requests
 
 
 engine=create_engine(f"postgresql://{settings.database_username}:{settings.database_password}@{settings.database_hostname}:{settings.database_port}/{settings.database_name}_test")

@@ -1,12 +1,6 @@
-from random import randrange
-from Databases.database import engine
-from fastapi import Body, Depends, FastAPI
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import OAuth2PasswordBearer
-# from fastapi.security.oauth2 import OAuth2PasswordRequestForm
-from sqlalchemy import func
-from sqlalchemy.orm import Session, relationship
-from Utils.utils import hash
 from Controller.Routers import user , school
 
 oauth2_scheme=OAuth2PasswordBearer(tokenUrl='login')
